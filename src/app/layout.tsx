@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mia Cabrera",
+  title: "curiousfeed",
   description: "Mia Cabrera's Portfolio"
 };
 
