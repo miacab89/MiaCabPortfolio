@@ -3,14 +3,10 @@ import { NextRequest } from "next/server";
 
 export async function GET(
     req: NextRequest, 
-    post: Posts,
+    { params }: { params: Promise<Posts> }
 ) {
 
-const posts = [
-    {
-        post
-    }
-];
+const posts = (await params).post; 
 
     try {
         return new Response(JSON.stringify(posts),{
