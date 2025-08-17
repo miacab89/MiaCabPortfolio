@@ -3,13 +3,14 @@ type Posts = {
     author: string,
     content: string[]
 }
+
 export async function GET({id, author, content}: Posts) {
 const posts = [
     {
-    id,
-    author,
-    content
-    },
+        id,
+        author,
+        content
+    }
 ];
     return new Response(JSON.stringify(posts),{
         status:200,
