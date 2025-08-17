@@ -18,14 +18,15 @@
 //     }
 // }
 import { Posts } from "@/app/types";
+import { NextApiResponse } from "next";
 
 export async function GET(
     req: Request, 
-    post: Posts 
-): Promise<Response> {
+    res: NextApiResponse<Posts> 
+) {
 
-    const posts = [{post}];
-    const result = new Response(JSON.stringify(posts),{
+    // const posts = [{post}];
+    const result = new Response(JSON.stringify(res),{
             status:200,
             headers:{ "Content-Type": "application/json" }
         }
