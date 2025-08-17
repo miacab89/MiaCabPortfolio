@@ -19,7 +19,7 @@
 // }
 import { Posts } from "@/app/types";
 
-export async function GET(res: Response, {post}: Posts) {
+export async function GET(req: Request, {post}: Posts) {
     const posts = [{post}];
     const result = new Response(JSON.stringify(posts),{
             status:200,
