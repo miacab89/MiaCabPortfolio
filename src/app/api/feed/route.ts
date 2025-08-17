@@ -1,8 +1,8 @@
-import { NextApiRequest } from "next";
 import { Posts } from "@/app/types";
+import { NextRequest } from "next/server";
 
 export async function GET(
-    req: NextApiRequest, 
+    req: NextRequest, 
     post: Posts
 ) {
 
