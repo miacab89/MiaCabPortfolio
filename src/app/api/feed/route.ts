@@ -19,7 +19,10 @@
 // }
 import { Posts } from "@/app/types";
 
-export async function GET(req: Request, post: Posts ) {
+export async function GET(
+    req: Request, 
+    post: Posts 
+): Promise<Response> {
 
     const posts = [{post}];
     const result = new Response(JSON.stringify(posts),{
