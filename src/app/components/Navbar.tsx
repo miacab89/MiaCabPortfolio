@@ -1,26 +1,27 @@
 import {
-NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-  NavigationMenuTrigger
+    NavigationMenu,
+    NavigationMenuLink,
+    NavigationMenuList,
 } from "@/app/components/ui/navigation-menu"
+import Link from "next/link"
+
 export function Navbar() {
     return(
         <div className="text-white">
             <NavigationMenu>
                 <NavigationMenuList>
-                    <NavigationMenuItem>
-                    <NavigationMenuTrigger>About</NavigationMenuTrigger>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                    <NavigationMenuTrigger>Music</NavigationMenuTrigger>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                    <NavigationMenuTrigger>Finance</NavigationMenuTrigger>
-                    </NavigationMenuItem>
-                    <NavigationMenuItem>
-                    <NavigationMenuTrigger>Weather</NavigationMenuTrigger>
-                    </NavigationMenuItem>
+                    <NavigationMenuLink>
+                        <Link href="/about">About</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink>
+                        <Link href="/music">Music</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink>
+                        <Link href="/finance">Finance</Link>
+                    </NavigationMenuLink>
+                    <NavigationMenuLink>
+                        <Link href="/weather">Weather</Link>
+                    </NavigationMenuLink>
                 </NavigationMenuList>
             </NavigationMenu>
         </div>
