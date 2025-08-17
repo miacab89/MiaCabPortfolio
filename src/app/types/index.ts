@@ -1,3 +1,3 @@
-export type Posts = {
+export interface Posts  {
     post: string[],
 }
