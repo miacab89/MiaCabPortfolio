@@ -3,10 +3,14 @@ import { NextRequest } from "next/server";
 
 export async function GET(
     req: NextRequest, 
-    post: Posts
+    post: Posts,
 ) {
 
-const posts = [{post}];
+const posts = [
+    {
+        post
+    }
+];
 
     try {
         return new Response(JSON.stringify(posts),{

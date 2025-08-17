@@ -1,3 +1,4 @@
-export interface Posts  {
+export type Posts = {
     post: string[],
+    author: string; 
 }
