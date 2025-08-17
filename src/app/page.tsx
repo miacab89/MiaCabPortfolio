@@ -2,7 +2,6 @@ import { Navbar } from "./components/Navbar";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { NewsFeedPanel } from "./components/NewsFeedPanel";
-import { NewsFeedSwitch } from "./components/NewsFeedSwitch";
 
 export default function Home() {
 
@@ -12,7 +11,6 @@ export default function Home() {
         <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
           <Navbar/>
           <NewsFeedPanel/>
-          {/* <NewsFeedSwitch/> */}
         </main>
       <Footer/>
     </div>

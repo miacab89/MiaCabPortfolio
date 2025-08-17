@@ -6,8 +6,8 @@ export function NewsFeed (res: NextApiResponse, req: NextApiRequest) {
     if (req.method === 'GET') {
         res.status(200).json({ id, message: 'Author data fetched successfully' });
     }
-    const url = 'https://api.worldnewsapi.com/extract-news?url=https://nypost.com/2024/04/02/us-news/lawmakers-demand-to-know-if-taxpayers-funded-al-shabaab-terrorist/';
-    const apiKey = '9422937bbedf4183b78d8b22d807697a';
+    const url = 'https://api.worldnewsapi.com'
+    const apiKey = '';
 
     fetch(url, {
         method: 'GET',
