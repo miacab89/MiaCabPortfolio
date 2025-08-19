@@ -18,18 +18,20 @@
 //     }
 // }
 import { Posts } from "@/app/types";
-import { NextApiResponse } from "next";
 
 export async function GET(
     req: Request, 
-    res: NextApiResponse<Posts> 
-) {
+    posts: Posts) {
 
-    // const posts = [{post}];
-    const result = new Response(JSON.stringify(res),{
+    try {
+        const result = new Response(JSON.stringify(posts),{
             status:200,
-            headers:{ "Content-Type": "application/json" }
+            headers:{ "Content-Type": "application/json" 
+            }
         }
     )
     return result; 
+    } catch(error) {
+        console.error(error)
+    }
 }
