@@ -1,18 +1,16 @@
-import { Posts } from "@/app/types";
-import { NextRequest } from "next/server";
-
-export async function GET(
-    req: NextRequest, 
-    post: Posts
-) {
-
-const posts = [{post}];
+export async function GET(req: Request) { 
 
     try {
-        return new Response(JSON.stringify(posts),{
-        status:200,
-        headers:{ "Content-Type": "application/json" }
-    })
+        const posts = await req.json(); 
+        const result = new Response(JSON.stringify([{posts}]),
+        {
+            status:200,
+            headers: { 
+                "Content-Type": "application/json" 
+            }
+        }
+    )
+    return result; 
     } catch(error) {
         console.error(error)
     }
