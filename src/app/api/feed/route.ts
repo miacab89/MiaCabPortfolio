@@ -12,6 +12,6 @@ export async function GET(req: Request) {
     )
     return result; 
     } catch(error) {
-        console.error(error)
+        return Response.json(error)
     }
 }
