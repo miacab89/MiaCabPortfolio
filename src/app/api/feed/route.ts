@@ -1,11 +1,12 @@
-import { NextRequest } from "next/server";
+export async function GET(req: Request) { 
 
-export async function GET(req: NextRequest) {
-const posts = req.json();
     try {
-        const result = new Response(JSON.stringify([{posts}]),{
+        const posts = await req.json(); 
+        const result = new Response(JSON.stringify([{posts}]),
+        {
             status:200,
-            headers:{ "Content-Type": "application/json" 
+            headers: { 
+                "Content-Type": "application/json" 
             }
         }
     )
