@@ -18,8 +18,11 @@
 //     }
 // }
 import { Posts } from "@/app/types";
+import { NextRequest } from "next/server";
 
-export async function GET(posts: Posts) {
+export async function GET(
+    req: NextRequest, 
+    posts: Posts) {
 
 const feed = [{posts}]; 
 

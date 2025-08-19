@@ -1,3 +1,3 @@
 export type Posts = {
-    post: string[];
+    post: string;
 }
