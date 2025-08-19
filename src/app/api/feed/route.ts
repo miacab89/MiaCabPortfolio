@@ -19,12 +19,10 @@
 // }
 import { Posts } from "@/app/types";
 
-export async function GET(
-    req: Request, 
-    posts: Posts
-) {
+export async function GET(posts: Posts) {
 
-    const feed = [{posts}]; 
+const feed = [{posts}]; 
+
     try {
         const result = new Response(JSON.stringify(feed),{
             status:200,
