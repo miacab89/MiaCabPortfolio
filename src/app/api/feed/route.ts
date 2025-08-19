@@ -21,10 +21,12 @@ import { Posts } from "@/app/types";
 
 export async function GET(
     req: Request, 
-    posts: Posts) {
+    posts: Posts
+) {
 
+    const feed = [{posts}]; 
     try {
-        const result = new Response(JSON.stringify(posts),{
+        const result = new Response(JSON.stringify(feed),{
             status:200,
             headers:{ "Content-Type": "application/json" 
             }
