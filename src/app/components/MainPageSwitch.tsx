@@ -2,11 +2,11 @@
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
 
-export function NewsFeedSwitch () {
+export function MainPageSwitch () {
     return(
         <div className="flex items-center space-x-2 text-white">
             <Switch id="curious-switch"/>
-            <Label>Curious Feed</Label>
+            <Label>Switch Pages</Label>
         </div>
     )
 }
