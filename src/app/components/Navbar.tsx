@@ -1,5 +1,6 @@
 import {
     NavigationMenu,
+    NavigationMenuItem,
     NavigationMenuLink,
     NavigationMenuList,
 } from "@/app/components/ui/navigation-menu"
@@ -10,18 +11,26 @@ export function Navbar() {
         <div className="text-white">
             <NavigationMenu>
                 <NavigationMenuList>
-                    <NavigationMenuLink>
-                        <Link href="/about">About</Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink>
-                        <Link href="/music">Music</Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink>
-                        <Link href="/finance">Finance</Link>
-                    </NavigationMenuLink>
-                    <NavigationMenuLink>
-                        <Link href="/weather">Weather</Link>
-                    </NavigationMenuLink>
+                    <NavigationMenuItem>
+                        <NavigationMenuLink asChild>
+                            <Link href="/about">About</Link>
+                        </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                        <NavigationMenuLink asChild>
+                            <Link href="/music">Music</Link>
+                        </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                        <NavigationMenuLink asChild>
+                            <Link href="/finance">Finance</Link>
+                        </NavigationMenuLink>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                        <NavigationMenuLink asChild>
+                            <Link href="/weather">Weather</Link>
+                        </NavigationMenuLink>
+                    </NavigationMenuItem>
                 </NavigationMenuList>
             </NavigationMenu>
         </div>
