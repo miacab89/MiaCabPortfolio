@@ -1,3 +1,4 @@
+// 'use client';
 import {
   Card,
   CardAction,
@@ -8,18 +9,22 @@ import {
   CardTitle,
 } from "@/app/components/ui/card"
 import { AtpAgent } from '@atproto/api' 
+import {blueskyRateLimiter} from "@/lib/server/bskyRateLimiter";
 
 async function NewsFeedPanel() {
-  const agent = new AtpAgent({ service: 'https://bsky.social' });
+  const agent = new AtpAgent({ service: 'https://bsky.social', persistSession: (evt, session) => {
+    // Handle session persistence here if needed
+    console.log(evt === 'create' ? 'Session created:' : 'Session destroyed', session);
+  } });
 
   await agent.login({ 
     identifier: process.env.BSKY_HANDLE!, 
     password: process.env.BSKY_PASSWORD! 
   });  
 
-  const { data } = await agent.getTimeline({limit: 30});
+  const { data } = await blueskyRateLimiter.makeRequest(() => agent.getTimeline({limit: 10}));
 
-const { feed: postsArray, cursor: nextPage } = data;
+const { feed: postsArray, cursor: nextPage } = JSON.parse(JSON.stringify(data))
   return (
     <Card className="w-[500px] h-[700px] text-center text-white bg-slate-600 border-slate-400">
       <CardHeader>
@@ -38,36 +43,29 @@ const { feed: postsArray, cursor: nextPage } = data;
         ))}
       </CardContent>
       <CardFooter>
-        {nextPage && (
+        {/* {nextPage && (
           <button
             className="text-blue-500 hover:underline"
             onClick={async () => {
               const { data: nextData } = await agent.getTimeline({
-                cursor: nextPage,
-                limit: 30,
+                cursor: "...",
+                limit: 10
               });
-              const { feed: nextPostsArray, cursor: nextNextPage } = nextData;
+              const { feed: nextPostsArray, cursor: nextPage } = nextData;
               nextPostsArray.forEach((post) => {
                 console.log(post.post.record.text);
               });
               // Update the state with the new posts and cursor
               // You can use a state management solution like React's useState or Redux to handle this
             }}
-            next-page={nextPage}
-            next-posts={postsArray}
-            next-posts-length={postsArray.length}
-            next-posts-next-page={nextPage}
-            // next-posts-next-page-length={nextPage ? nextPage.length : 0}
-            next-posts-next-page-next-posts={nextPage ? nextPage : null}
           >
             Load More
           </button>
-        )}  
+        )}   */}
       </CardFooter>
     </Card>
-              // Update the state with the new posts and cursor
-              // You can use a state management solution like React's useState or Redux to handle this
-
+  // Update the state with the new posts and cursor
+  // You can use a state management solution like React's useState or Redux to handle this
   )
 }
 
