@@ -14,7 +14,17 @@ import {BlueSkyRateLimiter} from "@/lib/server/bskyRateLimiter";
 async function NewsFeedPanel() {
   const agent = new AtpAgent({ service: 'https://bsky.social', persistSession: (evt, session) => {
     // Handle session persistence here if needed
-    console.log(evt === 'create' ? 'Session created:' : 'Session destroyed', session);
+    // console.log(evt === 'update' ? 'Session updated:' : 'Session expired or unavailable:', session);
+
+    if (typeof window !== 'undefined') {
+      if (evt === 'update' && session) {
+        // Store the session in a secure place, e.g., database or encrypted storage
+        localStorage.setItem('bsky-session', JSON.stringify(session));
+      } else if (evt === 'expired' || evt === 'network-error') {
+        // Remove the session from storage
+        localStorage.removeItem('bsky-session');
+      }
+    }
   } });
 
   await agent.login({ 
@@ -22,7 +32,18 @@ async function NewsFeedPanel() {
     password: process.env.BSKY_PASSWORD! 
   });  
 
-  const { data } = await BlueSkyRateLimiter.makeRequest(() => agent.getTimeline({limit: 10})) as unknown as { data: { feed: Array<{ post: { cid: string; record: { text: string }; author: { handle: string } } }> } };
+  const { data } = await BlueSkyRateLimiter.makeRequest(() => 
+    agent.getTimeline({limit: 10})) as unknown as 
+    { data: { 
+      feed: Array<{ post: 
+        { cid: string; 
+          record: { text: string }; 
+          author: { handle: string } 
+          } 
+        }> 
+      } 
+    };
+
   const { feed: postsArray } = JSON.parse(JSON.stringify(data))
 
   return (
@@ -35,11 +56,16 @@ async function NewsFeedPanel() {
         </CardAction>
       </CardHeader>
       <CardContent className="items-center">
-        {postsArray.map((post: { post: { cid: string; record: { text: string }; author: { handle: string } } }, index: number) => (
-          <div key={post.post.cid} className="border-b border-slate-400 p-2">
-            <p className="text-sm">{post.post.record.text as string}{index}</p>
-            <p className="text-xs text-slate-300">{post.post.author.handle as string}</p>
-          </div>
+        {postsArray.map((post: 
+          { post: { 
+            cid: string; 
+            record: { text: string }; 
+            author: { handle: string } } }, 
+            index: number) => (
+              <div key={post.post.cid} className="border-b border-slate-400 p-2">
+                <p className="text-sm">{post.post.record.text as string}{index}</p>
+                <p className="text-xs text-slate-300">{post.post.author.handle as string}</p>
+              </div>
         ))}
       </CardContent>
       <CardFooter>
