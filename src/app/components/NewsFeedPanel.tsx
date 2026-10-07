@@ -10,12 +10,14 @@ import {
 import { AtpAgent } from '@atproto/api' 
 
 async function NewsFeedPanel() {
-  const agent = new AtpAgent({ service: 'https://bsky.social' })  
-  await agent.login({ identifier: process.env.BSKY_HANDLE!, password: process.env.BSKY_PASSWORD! })  
-  const { data } = await agent.getTimeline({
-  cursor: "...",
-  limit: 30,
-});
+  const agent = new AtpAgent({ service: 'https://bsky.social' });
+
+  await agent.login({ 
+    identifier: process.env.BSKY_HANDLE!, 
+    password: process.env.BSKY_PASSWORD! 
+  });  
+
+  const { data } = await agent.getTimeline({limit: 30});
 
 const { feed: postsArray, cursor: nextPage } = data;
   return (
@@ -55,7 +57,7 @@ const { feed: postsArray, cursor: nextPage } = data;
             next-posts={postsArray}
             next-posts-length={postsArray.length}
             next-posts-next-page={nextPage}
-            next-posts-next-page-length={nextPage ? nextPage.length : 0}
+            // next-posts-next-page-length={nextPage ? nextPage.length : 0}
             next-posts-next-page-next-posts={nextPage ? nextPage : null}
           >
             Load More
