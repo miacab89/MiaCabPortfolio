@@ -5,15 +5,15 @@ class BlueskyRateLimiter {
     private readonly WRITE_LIMIT: number = 5000; // 5,000 points per hour
     private points: number = 0;
 
-    public async makeRequest(apiCall: () => Promise<any>): Promise<any> {
+    public async makeRequest(apiCall: () => Promise<unknown>): Promise<unknown> {
         this.checkRateLimit();
 
         try {
             const response = await apiCall();
             this.requestCount++;
             return response;
-        } catch (error) {
-            if (error.response.status === 429) {
+        } catch (error: unknown) {
+            if (error instanceof Error && (error as { response?: { status: number } }).response?.status === 429) {
                 console.error("Rate limit exceeded. Please wait.");
                 // Implement backoff strategy here
             }
@@ -42,4 +42,4 @@ class BlueskyRateLimiter {
     }
 }
 
-export const blueskyRateLimiter = new BlueskyRateLimiter();
+export const BlueSkyRateLimiter = new BlueskyRateLimiter();

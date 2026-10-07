@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/app/components/ui/card"
 import { AtpAgent } from '@atproto/api' 
-import {blueskyRateLimiter} from "@/lib/server/bskyRateLimiter";
+import {BlueSkyRateLimiter} from "@/lib/server/bskyRateLimiter";
 
 async function NewsFeedPanel() {
   const agent = new AtpAgent({ service: 'https://bsky.social', persistSession: (evt, session) => {
@@ -22,9 +22,9 @@ async function NewsFeedPanel() {
     password: process.env.BSKY_PASSWORD! 
   });  
 
-  const { data } = await blueskyRateLimiter.makeRequest(() => agent.getTimeline({limit: 10}));
+  const { data } = await BlueSkyRateLimiter.makeRequest(() => agent.getTimeline({limit: 10})) as unknown as { data: { feed: Array<{ post: { cid: string; record: { text: string }; author: { handle: string } } }> } };
+  const { feed: postsArray } = JSON.parse(JSON.stringify(data))
 
-const { feed: postsArray, cursor: nextPage } = JSON.parse(JSON.stringify(data))
   return (
     <Card className="w-[500px] h-[700px] text-center text-white bg-slate-600 border-slate-400">
       <CardHeader>
@@ -35,9 +35,9 @@ const { feed: postsArray, cursor: nextPage } = JSON.parse(JSON.stringify(data))
         </CardAction>
       </CardHeader>
       <CardContent className="items-center">
-        {postsArray.map((post) => (
+        {postsArray.map((post: { post: { cid: string; record: { text: string }; author: { handle: string } } }, index: number) => (
           <div key={post.post.cid} className="border-b border-slate-400 p-2">
-            <p className="text-sm">{post.post.record.text as string}</p>
+            <p className="text-sm">{post.post.record.text as string}{index}</p>
             <p className="text-xs text-slate-300">{post.post.author.handle as string}</p>
           </div>
         ))}
@@ -61,7 +61,7 @@ const { feed: postsArray, cursor: nextPage } = JSON.parse(JSON.stringify(data))
           >
             Load More
           </button>
-        )}   */}
+        )}    */}
       </CardFooter>
     </Card>
   // Update the state with the new posts and cursor
