@@ -1,7 +1,19 @@
-import { Navbar } from "./components/Navbar";
+// import { Navbar } from "./components/Navbar";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { NewsFeedPanel } from "./components/NewsFeedPanel";
+export const dynamic = "force-dynamic";
+
+export const curiousmetadata = {
+  title: "curiousfeed",
+  description: "curiousfeed is a social media platform that allows users to share and discover interesting content from around the web.",
+};
+
+export const portfolometadata = {
+  title: "Mia's Portfolio",
+  description: "Mia's Portfolio is a personal website that showcases my work, skills, and experience as a software developer.",
+};
+
 
 export default function Home() {
 
@@ -9,7 +21,7 @@ export default function Home() {
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <Header/>
         <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-          <Navbar/>
+          {/* <Navbar/> */}
           <NewsFeedPanel/>
         </main>
       <Footer/>
