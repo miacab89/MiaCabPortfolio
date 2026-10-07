@@ -4,15 +4,15 @@ import { Footer } from "./components/Footer";
 import { NewsFeedPanel } from "./components/NewsFeedPanel";
 export const dynamic = "force-dynamic";
 
-export const curiousmetadata = {
-  title: "curiousfeed",
-  description: "curiousfeed is a social media platform that allows users to share and discover interesting content from around the web.",
-};
+// export const curiousmetadata = {
+//   title: "curiousfeed",
+//   description: "curiousfeed is a social media platform that allows users to share and discover interesting content from around the web.",
+// };
 
-export const portfolometadata = {
-  title: "Mia's Portfolio",
-  description: "Mia's Portfolio is a personal website that showcases my work, skills, and experience as a software developer.",
-};
+// export const portfolometadata = {
+//   title: "Mia's Portfolio",
+//   description: "Mia's Portfolio is a personal website that showcases my work, skills, and experience as a software developer.",
+// };
 
 
 export default function Home() {
