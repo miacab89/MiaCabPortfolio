@@ -9,12 +9,12 @@ import {
   CardTitle,
 } from "@/app/components/ui/card"
 import { AtpAgent } from '@atproto/api' 
-import {BlueSkyRateLimiter} from "@/lib/server/bskyRateLimiter";
+import { BlueSkyRateLimiter } from "@/lib/server/bskyRateLimiter";
 
 async function NewsFeedPanel() {
   const agent = new AtpAgent({ service: 'https://bsky.social', persistSession: (evt, session) => {
     // Handle session persistence here if needed
-    // console.log(evt === 'update' ? 'Session updated:' : 'Session expired or unavailable:', session);
+    console.log(evt === 'update' ? 'Session updated:' : 'Session expired or unavailable:', session);
 
     if (typeof window !== 'undefined') {
       if (evt === 'update' && session) {
@@ -60,13 +60,11 @@ async function NewsFeedPanel() {
           { post: { 
             cid: string; 
             record: { text: string }; 
-            author: { handle: string } } }, 
-            index: number) => (
+            author: { handle: string } } }) => (
               <div key={post.post.cid} className="border-b border-slate-400 p-2">
-                <p className="text-sm">{post.post.record.text as string}{index}</p>
+                <p className="text-sm">{post.post.record.text as string}</p>
                 <p className="text-xs text-slate-300">{post.post.author.handle as string}</p>
-              </div>
-        ))}
+              </div>))}
       </CardContent>
       <CardFooter>
         {/* {nextPage && (
