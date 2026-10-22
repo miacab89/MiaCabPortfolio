@@ -9,48 +9,41 @@ import {
   CardTitle,
 } from "@/app/components/ui/card"
 import { AtpAgent } from '@atproto/api' 
+import { unstable_cache } from "next/cache";
 import { BlueSkyRateLimiter } from "@/lib/server/bskyRateLimiter";
 
+type FeedItem = {
+  post: {
+    cid: string;
+    record: { text: string };
+    author: { handle: string }
+  }
+};
+
+// Cached so we log in to Bluesky at most once every 5 minutes instead of on
+// every page view (createSession is rate limited). Errors are not cached.
+const getTimeline = unstable_cache(async (): Promise<FeedItem[]> => {
+  const identifier = process.env.BSKY_HANDLE;
+  const password = process.env.BSKY_PASSWORD;
+  if (!identifier || !password) {
+    throw new Error("BSKY_HANDLE and BSKY_PASSWORD environment variables must be set");
+  }
+
+  const agent = new AtpAgent({ service: 'https://bsky.social' });
+  await agent.login({ identifier, password });
+
+  const { data } = await BlueSkyRateLimiter.makeRequest(() =>
+    agent.getTimeline({limit: 10})) as unknown as { data: { feed: FeedItem[] } };
+
+  return JSON.parse(JSON.stringify(data)).feed;
+}, ["bsky-timeline"], { revalidate: 300 });
+
 async function NewsFeedPanel() {
-  const agent = new AtpAgent({ service: 'https://bsky.social', persistSession: (evt, session) => {
-    // Handle session persistence here if needed
-    console.log(evt === 'update' ? 'Session updated:' : 'Session expired or unavailable:', session);
-
-    if (typeof window !== 'undefined') {
-      if (evt === 'update' && session) {
-        // Store the session in a secure place, e.g., database or encrypted storage
-        localStorage.setItem('bsky-session', JSON.stringify(session));
-      } else if (evt === 'expired' || evt === 'network-error') {
-        // Remove the session from storage
-        localStorage.removeItem('bsky-session');
-      }
-    }
-  }});
-
-  type FeedItem = {
-    post: {
-      cid: string;
-      record: { text: string };
-      author: { handle: string }
-    }
-  };
-
   let postsArray: FeedItem[] = [];
   let feedError = false;
 
   try {
-    const identifier = process.env.BSKY_HANDLE;
-    const password = process.env.BSKY_PASSWORD;
-    if (!identifier || !password) {
-      throw new Error("BSKY_HANDLE and BSKY_PASSWORD environment variables must be set");
-    }
-
-    await agent.login({ identifier, password });
-
-    const { data } = await BlueSkyRateLimiter.makeRequest(() =>
-      agent.getTimeline({limit: 10})) as unknown as { data: { feed: FeedItem[] } };
-
-    postsArray = JSON.parse(JSON.stringify(data)).feed;
+    postsArray = await getTimeline();
   } catch (error) {
     // Render a fallback instead of failing the whole page
     console.error("Failed to load Bluesky feed:", error);
