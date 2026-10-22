@@ -27,13 +27,10 @@ async function NewsFeedPanel() {
     }
   }});
 
-  const identifier = process.env.BSKY_HANDLE;
-  const password = process.env.BSKY_PASSWORD;
-  if (!identifier || !password) {
-    throw new Error("BSKY_HANDLE and BSKY_PASSWORD environment variables must be set");
-  }
-
-  await agent.login({ identifier, password });
+  await agent.login({ 
+    identifier: process.env.BSKY_HANDLE!, 
+    password: process.env.BSKY_PASSWORD! 
+  });  
 
   const { data } = await BlueSkyRateLimiter.makeRequest(() => 
     agent.getTimeline({limit: 10})) as unknown as 
