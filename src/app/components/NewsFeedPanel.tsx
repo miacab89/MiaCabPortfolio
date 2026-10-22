@@ -25,7 +25,7 @@ async function NewsFeedPanel() {
         localStorage.removeItem('bsky-session');
       }
     }
-  } });
+  }});
 
   await agent.login({ 
     identifier: process.env.BSKY_HANDLE!, 
@@ -60,7 +60,7 @@ async function NewsFeedPanel() {
           { post: { 
             cid: string; 
             record: { text: string }; 
-            author: { handle: string } } }) => (
+            author: { handle: string }}}) => (
               <div key={post.post.cid} className="border-b border-slate-400 p-2">
                 <p className="text-sm">{post.post.record.text as string}</p>
                 <p className="text-xs text-slate-300">{post.post.author.handle as string}</p>

@@ -2,8 +2,8 @@ import {
     NavigationMenu,
     NavigationMenuLink,
     NavigationMenuList,
-} from "@/app/components/ui/navigation-menu"
-import Link from "next/link"
+} from "@/app/components/ui/navigation-menu";
+import Link from "next/link";
 
 export function Navbar() {
     return(
