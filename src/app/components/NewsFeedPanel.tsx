@@ -27,24 +27,35 @@ async function NewsFeedPanel() {
     }
   }});
 
-  await agent.login({ 
-    identifier: process.env.BSKY_HANDLE!, 
-    password: process.env.BSKY_PASSWORD! 
-  });  
+  type FeedItem = {
+    post: {
+      cid: string;
+      record: { text: string };
+      author: { handle: string }
+    }
+  };
 
-  const { data } = await BlueSkyRateLimiter.makeRequest(() => 
-    agent.getTimeline({limit: 10})) as unknown as 
-    { data: { 
-      feed: Array<{ post: 
-        { cid: string; 
-          record: { text: string }; 
-          author: { handle: string } 
-          } 
-        }> 
-      } 
-    };
+  let postsArray: FeedItem[] = [];
+  let feedError = false;
 
-  const { feed: postsArray } = JSON.parse(JSON.stringify(data))
+  try {
+    const identifier = process.env.BSKY_HANDLE;
+    const password = process.env.BSKY_PASSWORD;
+    if (!identifier || !password) {
+      throw new Error("BSKY_HANDLE and BSKY_PASSWORD environment variables must be set");
+    }
+
+    await agent.login({ identifier, password });
+
+    const { data } = await BlueSkyRateLimiter.makeRequest(() =>
+      agent.getTimeline({limit: 10})) as unknown as { data: { feed: FeedItem[] } };
+
+    postsArray = JSON.parse(JSON.stringify(data)).feed;
+  } catch (error) {
+    // Render a fallback instead of failing the whole page
+    console.error("Failed to load Bluesky feed:", error);
+    feedError = true;
+  }
 
   return (
     <Card className="w-[500px] h-[700px] text-center text-white bg-slate-600 border-slate-400">
@@ -56,11 +67,10 @@ async function NewsFeedPanel() {
         </CardAction>
       </CardHeader>
       <CardContent className="items-center">
-        {postsArray.map((post: 
-          { post: { 
-            cid: string; 
-            record: { text: string }; 
-            author: { handle: string }}}) => (
+        {feedError && (
+          <p className="text-sm text-slate-300">Feed unavailable right now. Please try again later.</p>
+        )}
+        {postsArray.map((post) => (
               <div key={post.post.cid} className="border-b border-slate-400 p-2">
                 <p className="text-sm">{post.post.record.text as string}</p>
                 <p className="text-xs text-slate-300">{post.post.author.handle as string}</p>
